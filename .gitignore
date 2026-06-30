@@ -1,0 +1,17 @@
+# Terraform files
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# VirtualBox & OS files
+*.log
+*.vmdk
+*.vdi
+.DS_Store
+Thumbs.db
+
+# Python files
+__pycache__/
+*.pyc
+venv/
