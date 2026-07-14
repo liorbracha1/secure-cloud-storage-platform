@@ -1,0 +1,69 @@
+---
+# 1. Update system packages
+- name: Update apt cache and upgrade packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+    cache_valid_time: 3600
+
+
+# 2. Install prerequisites
+- name: Install prerequisites for Docker
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+
+
+# 3. Install Docker
+- name: Install Docker Engine
+  apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+
+
+- name: Ensure Docker is running
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+
+# 4. Install K3s Server on Master
+- name: Install K3s Server on Master
+  shell: curl -sfL https://get.k3s.io | sh -
+  args:
+    creates: /usr/local/bin/k3s
+  when: "'master' in group_names"
+
+
+# 5. Get K3s token from Master
+- name: Read K3s token
+  slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: k3s_token_encoded
+  when: "'master' in group_names"
+
+
+# 6. Save token on Master
+- name: Decode K3s token
+  set_fact:
+    k3s_token: "{{ k3s_token_encoded.content | b64decode | trim }}"
+  when: "'master' in group_names"
+
+
+# 7. Install K3s Agent on Workers
+- name: Install K3s Agent on Workers
+  shell: >
+    curl -sfL https://get.k3s.io |
+    K3S_URL=https://{{ hostvars[groups['master'][0]]['ansible_host'] }}:6443
+    K3S_TOKEN={{ hostvars[groups['master'][0]]['k3s_token'] }}
+    sh -
+  args:
+    creates: /etc/systemd/system/k3s-agent.service
+  when: "'workers' in group_names"
