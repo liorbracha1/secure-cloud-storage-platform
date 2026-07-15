@@ -28,3 +28,10 @@ The local environment is virtualized using VirtualBox and running Ubuntu Server 
 - Static IPs assigned via Netplan  
 - Passwordless SSH access configured from the host machine to all cluster components
 
+## Kubernetes Storage Layer
+
+The cluster includes Kubernetes storage capabilities:
+
+- NetApp Trident CSI driver installation
+- K3s local-path dynamic provisioning for local storage validation
+- PersistentVolumeClaim and PersistentVolume lifecycle testing
