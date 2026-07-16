@@ -28,6 +28,7 @@ The local environment is virtualized using VirtualBox and running Ubuntu Server 
 - Static IPs assigned via Netplan  
 - Passwordless SSH access configured from the host machine to all cluster components
 
+
 ## Kubernetes Storage Layer
 
 The cluster includes Kubernetes storage capabilities:
@@ -35,3 +36,6 @@ The cluster includes Kubernetes storage capabilities:
 - NetApp Trident CSI driver installation
 - K3s local-path dynamic provisioning for local storage validation
 - PersistentVolumeClaim and PersistentVolume lifecycle testing
+
+## APP
+Developed a containerized Flask REST API integrated with AWS S3 using boto3, implemented retry mechanisms for cloud resilience, and secured the Docker image using non-root execution and least privilege principles.
