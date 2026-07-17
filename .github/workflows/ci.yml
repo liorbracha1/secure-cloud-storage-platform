@@ -80,7 +80,7 @@ jobs:
 
     - name: Run Trivy vulnerability scan
 
-      uses: aquasecurity/trivy-action@b6643a29fecd7f34b3597bc6acb0a98b03d33ff
+      uses: aquasecurity/trivy-action@c07df6fec6fa692e6fd1200d50aaa1fdd66f03c8
 
       with:
 
