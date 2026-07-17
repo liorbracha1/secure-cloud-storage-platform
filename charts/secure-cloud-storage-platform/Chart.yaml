@@ -1,0 +1,11 @@
+apiVersion: v2
+
+name: secure-cloud-storage-platform
+
+description: Helm chart for deploying Flask REST API with AWS S3 integration
+
+type: application
+
+version: 0.1.0
+
+appVersion: "1.0.0"
