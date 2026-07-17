@@ -1,0 +1,50 @@
+name: Secure Cloud Storage Platform CD Pipeline
+
+on:
+  workflow_run:
+    workflows:
+      - Secure Cloud Storage Platform CI Pipeline
+    types:
+      - completed
+
+
+jobs:
+
+  helm-validation:
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+
+    - name: Setup Helm
+      uses: azure/setup-helm@1a275c3b69536ee54be2c207d255a0e3f7f9f3f2
+      with:
+        version: v3.15.4
+
+
+    - name: Helm Lint
+      run: |
+        helm lint charts/secure-cloud-storage-platform
+
+
+    - name: Helm Template Validation
+      run: |
+        helm template charts/secure-cloud-storage-platform
+
+
+    - name: Verify Kubernetes Security Configuration
+      run: |
+        helm template charts/secure-cloud-storage-platform | grep -q "runAsNonRoot: true"
+        helm template charts/secure-cloud-storage-platform | grep -q "allowPrivilegeEscalation: false"
+
+
+    - name: Verify Resource Limits
+      run: |
+        helm template charts/secure-cloud-storage-platform | grep -q "memory: 256Mi"
+        helm template charts/secure-cloud-storage-platform | grep -q "cpu: 500m"
