@@ -23,7 +23,8 @@ jobs:
 
 
     - name: Setup Helm
-      uses: azure/setup-helm@1a275c3b69536ee54be2c207d255a0e3f7f9f3f2
+      uses: azure/setup-helm@78f94bcee2ce97153fb6783fbb9e60fae29b6357
+
       with:
         version: v3.15.4
 
@@ -48,3 +49,8 @@ jobs:
       run: |
         helm template charts/secure-cloud-storage-platform | grep -q "memory: 256Mi"
         helm template charts/secure-cloud-storage-platform | grep -q "cpu: 500m"
+
+    - name: Validate Helm Image Tag
+      run: |
+        helm template charts/secure-cloud-storage-platform \
+        --set image.tag=${{ github.event.workflow_run.head_sha }}

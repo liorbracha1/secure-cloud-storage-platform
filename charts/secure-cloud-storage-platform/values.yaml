@@ -4,11 +4,12 @@
 replicaCount: 1
 
 image:
-  repository: secure-cloud-storage-platform
+  repository: 051495878388.dkr.ecr.eu-central-1.amazonaws.com/secure-cloud-storage-platform
   pullPolicy: IfNotPresent
-  tag: latest
+  tag: ""
 
-imagePullSecrets: []
+imagePullSecrets:
+  - name: ecr-registry-secret
 
 nameOverride: ""
 fullnameOverride: ""
